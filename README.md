@@ -186,3 +186,42 @@ $$
 ![image-20220324225740345](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324225740345.png)**抑制过拟合**
 
 正则化，Dropout
+
+
+
+### CNN
+
+**填充（padding）**
+
+**步幅（stride）**
+
+假设输入大小为(H, W)，滤波器大小为(FH, FW)，输出大小为 (OH, OW)，填充为P，步幅为S。
+$$
+OH = \frac{H+2P-FH}{S}+1
+\newline OW = \frac{W+2P-FW}{S}+1
+$$
+
+
+![image-20220324232717013](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324232717013.png)
+
+通道数只能设定为和输入数据的通道数相同的值
+
+![image-20220324232750847](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324232750847.png)
+
+![image-20220324233326377](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324233326377.png)
+
+![image-20220324233521401](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324233521401.png)
+
+![image-20220324233757903](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324233757903.png)
+
+通过应用FN个滤波器，输出特征图也生成了FN个。如果 将这FN个特征图汇集在一起，就得到了形状为(FN, OH, OW)的方块。
+
+通道数为C、高度为H、 长度为W的数据的形状可以写成（C, H, W）
+
+滤波器的权重数据要按(output_channel, input_ channel, height, width)的顺序书写
+
+![image-20220324233823531](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324233823531.png)
+
+在各层间传递的数据保存为4维数据(batch_num, channel, height, width)
+
+**Pooling池化层**
