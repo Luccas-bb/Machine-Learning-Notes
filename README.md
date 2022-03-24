@@ -84,3 +84,105 @@ $$
 - 恒等函数 回归
 - sigmoid 二分类
 - softmax 多分类
+
+#### 损失函数
+
+- 交叉熵损失函数（神经网络）
+- MSE 平方损失
+- Zero-one loss
+- Hinge loss
+- Log loss
+- Exponential loss 指数损失 ？？
+- Perceptron loss
+- 绝对值损失
+
+#### 优化方法 optimizer
+
+**SGD**
+$$
+\boldsymbol{W} := \boldsymbol{W} -\eta \frac{\part{L}}{\part{\boldsymbol{W}}}
+$$
+**Momentum** 动量
+
+$\boldsymbol{v}$ 保存之前的梯度加权累计
+$$
+\boldsymbol{v} := \alpha\boldsymbol{v}-\eta \frac{\part{L}}{\part{\boldsymbol{W}}}
+\newline\boldsymbol{W} := \boldsymbol{W} + \boldsymbol{v}
+$$
+**AdaGrad**
+
+学习率衰减
+
+$\boldsymbol{h}$ 保留之前所有梯度值的平方和，在更新参数时，通过$\boldsymbol{h}$调整学习尺度，被大幅度更新的参数学习率较小。
+
+
+$$
+\boldsymbol{h} := \boldsymbol{h} + \frac{\part{L}}{\part{\boldsymbol{W}}}\bigodot\frac{\part{L}}{\part{\boldsymbol{W}}}
+\newline \boldsymbol{W} := \boldsymbol{W} - \eta\frac{1}{\sqrt{\boldsymbol{h}}} \frac{\part{L}}{\part{\boldsymbol{W}}}
+$$
+**RMSProp** 
+
+AdaGrad学习越深入，更新的幅度就越小，随着学习更新量会趋近 0，几乎不再更新
+
+RMSProp方法的$\boldsymbol{h}$设置为指数移动平均，逐渐遗忘过去的梯度，反映新的梯度信息
+$$
+\boldsymbol{h} := \rho\boldsymbol{h} + (1-\rho)\frac{\part{L}}{\part{\boldsymbol{W}}}\bigodot\frac{\part{L}}{\part{\boldsymbol{W}}}
+\newline \boldsymbol{W} := \boldsymbol{W} - \eta\frac{1}{\sqrt{\boldsymbol{h}}} \frac{\part{L}}{\part{\boldsymbol{W}}}
+$$
+**Adam**
+$$
+\boldsymbol{v} := \beta_1\boldsymbol{v}+(1-\beta_1)\frac{\part{L}}{\part{\boldsymbol{W}}}
+\newline\boldsymbol{h} := \beta_2\boldsymbol{h} + (1-\beta_2)\frac{\part{L}}{\part{\boldsymbol{W}}}\bigodot\frac{\part{L}}{\part{\boldsymbol{W}}}
+\newline\boldsymbol{W} := \boldsymbol{W} - \eta\frac{\sqrt{1-\beta_2}}{1-\beta_1}\frac{\boldsymbol{v}}{\sqrt{\boldsymbol{h}}}
+$$
+![image-20220324154043570](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324154043570.png)
+
+![image-20220324154217490](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324154217490.png)
+
+##### Q3神经网络为什么不能初始化相同的值
+
+在误差反向传播法中，所有的权重值都会进行相同的更新，使得不同的权重丧失意义
+
+如果第一层和第二层之间的权值相同，第二层每个单元会接收到相同的输出。
+
+反向传播的时候，第二层权重全部都会进行相同的更新
+
+**Q4初始化选择**
+
+各层的激活值(经过激活函数后的输出)的分布都要求有适当的广度
+
+传递的是有所偏向的数据，就会出现梯度消失或者“表 现力受限”的问题
+
+Xavier初始值:与前一层有n个节点连接时，初始值使用标准差为$\frac{1}{\sqrt{n}}$的高斯分布
+
+Xavier初始值是以激活函数是线性函数为前提而推导出来的。因为 sigmoid函数和tanh函数左右对称，且中央附近可以视作线性函数，
+
+![image-20220324195421104](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324195421104.png)
+
+He初始值:使用标准差为$\frac{2}{\sqrt{n}}$的高斯分布
+
+![image-20220324195620304](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324195620304.png)
+
+**Feature Scaling**
+
+如果特征大小差的比较远的话，loss function会很扁平，数值更大的feature的参数会对结果的影响更大，这样在训练过程中，不同的方向需要设定不同的学习率，这样子会不太方便，这不是我们想看到的，所以我们通常会去做feature scaling。
+
+**Batch Normalization**
+$$
+\mu_B := \frac{1}{m}\sum_{i=1}^{m}{x_i}
+\newline\sigma_B^2:=\sqrt{\frac{1}{m}\sum_{i=1}^{m}{(x_i-\mu_B)^2}}
+\newline\hat{x_i}:=\frac{x_i-\mu_B}{\sqrt{\sigma_B^2+\varepsilon}}
+$$
+
+
+- **每一层的激活函数前做batch normalization**
+- 我们观察了各层的激活值分布，并从中了解到如果设定了合适的权重初始值，则各层的激活值分布会有适当的广度。
+- “强制性”地调整激活值的分布
+- 优点
+  - 可以使学习快速进行（可以增大学习率）。 
+  - 不那么依赖权重初始值（对于初始值不用那么神经质）。 
+  - 抑制过拟合（降低Dropout等的必要性）
+
+![image-20220324225740345](C:\Users\56482\AppData\Roaming\Typora\typora-user-images\image-20220324225740345.png)**抑制过拟合**
+
+正则化，Dropout
