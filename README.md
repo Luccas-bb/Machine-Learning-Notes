@@ -135,9 +135,9 @@ $$
 \newline\boldsymbol{h} := \beta_2\boldsymbol{h} + (1-\beta_2)\frac{\partial{L}}{\partial{\boldsymbol{W}}}\bigodot\frac{\partial{L}}{\partial{\boldsymbol{W}}}
 \newline\boldsymbol{W} := \boldsymbol{W} - \eta\frac{\sqrt{1-\beta_2}}{1-\beta_1}\frac{\boldsymbol{v}}{\sqrt{\boldsymbol{h}}}
 $$
-![image-20220324154043570](README.assets\image-20220324154043570.png)
+![image-20220324154043570](README.assets/image-20220324154043570.png)
 
-![image-20220324154217490](README.assets\image-20220324154217490.png)
+![image-20220324154217490](README.assets/image-20220324154217490.png)
 
 ##### Q3神经网络为什么不能初始化相同的值
 
@@ -157,11 +157,11 @@ Xavier初始值:与前一层有n个节点连接时，初始值使用标准差为
 
 Xavier初始值是以激活函数是线性函数为前提而推导出来的。因为 sigmoid函数和tanh函数左右对称，且中央附近可以视作线性函数，
 
-![image-20220324195421104](README.assets\image-20220324195421104.png)
+![image-20220324195421104](README.assets/image-20220324195421104.png)
 
 He初始值:使用标准差为$\frac{2}{\sqrt{n}}$的高斯分布
 
-![image-20220324195620304](README.assets\image-20220324195620304.png)
+![image-20220324195620304](README.assets/image-20220324195620304.png)
 
 **Feature Scaling**
 
@@ -183,7 +183,7 @@ $$
   - 不那么依赖权重初始值（对于初始值不用那么神经质）。 
   - 抑制过拟合（降低Dropout等的必要性）
 
-![image-20220324225740345](README.assets\image-20220324225740345.png)**抑制过拟合**
+![image-20220324225740345](README.assets/image-20220324225740345.png)**抑制过拟合**
 
 正则化，Dropout
 
@@ -202,17 +202,17 @@ OH = \frac{H+2P-FH}{S}+1
 $$
 
 
-![image-20220324232717013](README.assets\image-20220324232717013.png)
+![image-20220324232717013](README.assets/image-20220324232717013.png)
 
 通道数只能设定为和输入数据的通道数相同的值
 
-![image-20220324232750847](README.assets\image-20220324232750847.png)
+![image-20220324232750847](README.assets/image-20220324232750847.png)
 
-![image-20220324233326377](README.assets\image-20220324233326377.png)
+![image-20220324233326377](README.assets/image-20220324233326377.png)
 
-![image-20220324233521401](README.assets\image-20220324233521401.png)
+![image-20220324233521401](README.assets/image-20220324233521401.png)
 
-![image-20220324233757903](README.assets\image-20220324233757903.png)
+![image-20220324233757903](README.assets/image-20220324233757903.png)
 
 通过应用FN个滤波器，输出特征图也生成了FN个。如果 将这FN个特征图汇集在一起，就得到了形状为(FN, OH, OW)的方块。
 
@@ -220,7 +220,7 @@ $$
 
 滤波器的权重数据要按(output_channel, input_ channel, height, width)的顺序书写
 
-![image-20220324233823531](README.assets\image-20220324233823531.png)
+![image-20220324233823531](README.assets/image-20220324233823531.png)
 
 在各层间传递的数据保存为4维数据(batch_num, channel, height, width)
 
